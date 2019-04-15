@@ -1,10 +1,19 @@
-body { margin: 0; }
+body {
+    margin: 0;
+    background-color: #444444;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2em;
+}
 
 #scene { width: 90%; height: 90%}
 
 /* SVG styling */
 svg {
-    font-family: helvetica, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    display: block;
+    margin: auto;
+    background-color: #444444;
 }
 
 path, line {

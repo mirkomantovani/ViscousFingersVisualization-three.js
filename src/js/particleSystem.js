@@ -17,14 +17,17 @@ var ParticleSystem = function () {
     // bounds of the data
     var bounds = {};
 
-    var particleSize = 0.04;
+    var particleSize = 0.005;
     var particleSystem;
 
     // D3 functions
-    var colorScale = d3.scaleLinear()
-        .domain([0, 5])
-        .range(['#d3d1d1', '#c13434'])
-        .interpolate(d3.interpolateRgb);
+    // var colorScale = d3.scaleLinear()
+    //     .domain([0, 3])
+    //     .range(['#d3d1d1', '#c13434'])
+    //     .interpolate(d3.interpolateRgb);
+
+    var colorScale = d3.scaleSequential().domain([1,50])
+        .interpolator(d3.interpolateViridis);
 
     // create the containment box.
     // This cylinder is only to guide development.
