@@ -79,13 +79,13 @@ var ParticleSystem = function () {
 
                 // get the min bounds
                 bounds.minX = Math.min(bounds.minX || Infinity, d.Points0);
-                bounds.minY = Math.min(bounds.minY || Infinity, d.Points1);
-                bounds.minZ = Math.min(bounds.minZ || Infinity, d.Points2);
+                bounds.minY = Math.min(bounds.minY || Infinity, d.Points2); // Inverted 1 and 2
+                bounds.minZ = Math.min(bounds.minZ || Infinity, d.Points1);
 
                 // get the max bounds
                 bounds.maxX = Math.max(bounds.maxX || -Infinity, d.Points0);
-                bounds.maxY = Math.max(bounds.maxY || -Infinity, d.Points1);
-                bounds.maxZ = Math.max(bounds.maxY || -Infinity, d.Points2);
+                bounds.maxY = Math.max(bounds.maxY || -Infinity, d.Points2); // Inverted 1 and 2
+                bounds.maxZ = Math.max(bounds.maxY || -Infinity, d.Points1);
 
                 // add the element to the data collection
                 data.push({
@@ -93,12 +93,12 @@ var ParticleSystem = function () {
                     concentration: Number(d.concentration),
                     // Position
                     X: Number(d.Points0),
-                    Y: Number(d.Points1),
-                    Z: Number(d.Points2),
+                    Y: Number(d.Points2 -5), // Inverted 1 and 2, translated down to be inside cylynder 
+                    Z: Number(d.Points1),
                     // Velocity
                     U: Number(d.velocity0),
-                    V: Number(d.velocity1),
-                    W: Number(d.velocity2)
+                    V: Number(d.velocity2), // Inverted 1 and 2
+                    W: Number(d.velocity1)
                 });
             })
             // when done loading
