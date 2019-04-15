@@ -34,6 +34,8 @@ var Scene = function(options) {
     // create the renderer
     self.renderer = new THREE.WebGLRenderer();
 
+    var controls = new THREE.OrbitControls(self.camera, self.renderer.domElement);
+
     // set the size and append it to the document
     self.renderer.setSize( width, height );
     document.getElementById(options.container).appendChild( self.renderer.domElement );
