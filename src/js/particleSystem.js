@@ -192,8 +192,8 @@ var ParticleSystem = function () {
     // Slider behavior
     d3.select("#slider").on("input", function() {
         var sliderValue = this.value;
+        plane.position.z = sliderValue;
         self.createSlice(sliderValue);
-
     });
 
     // publicly available functions
