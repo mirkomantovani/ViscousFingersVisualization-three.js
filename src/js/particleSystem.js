@@ -19,6 +19,7 @@ var ParticleSystem = function () {
 
     var particleSize = 0.005;
     var particleSystem;
+    var plane;
 
     // D3 functions
     // var colorScale = d3.scaleLinear()
@@ -26,7 +27,7 @@ var ParticleSystem = function () {
     //     .range(['#d3d1d1', '#c13434'])
     //     .interpolate(d3.interpolateRgb);
 
-    var colorScale = d3.scaleSequential().domain([1,50])
+    var colorScale = d3.scaleSequential().domain([1, 50])
         .interpolator(d3.interpolateViridis);
 
     // create the containment box.
@@ -72,6 +73,26 @@ var ParticleSystem = function () {
 
     };
 
+    self.createPlane = function () {
+        // var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20, 15, 15), new THREE.MeshStandardMaterial( {color: 0xa3a3a3, side: THREE.DoubleSide, opacity: 0.1, transparent: true, wireframe: true} ));
+        
+        var height = bounds.maxY - bounds.minY;
+        var width = bounds.maxX - bounds.minX;
+
+        var planeGeom = new THREE.PlaneGeometry(width+1, height+1, 16);
+        var planeMat = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, opacity: 0.3, transparent: true});
+
+        planeMat.transparent = true;
+
+        plane = new THREE.Mesh( planeGeom, planeMat );
+        plane.name = 'plane';
+                // plane.position.y = (bounds.minY + bounds.maxY) / 2;
+        // plane.position.z = 0;
+
+        sceneObject.add(plane);
+
+    }
+
     // data loading function
     self.loadData = function (file) {
 
@@ -96,7 +117,7 @@ var ParticleSystem = function () {
                     concentration: Number(d.concentration),
                     // Position
                     X: Number(d.Points0),
-                    Y: Number(d.Points2 -5), // Inverted 1 and 2, translated down to be inside cylynder 
+                    Y: Number(d.Points2 - 5), // Inverted 1 and 2, translated down to be inside cylynder 
                     Z: Number(d.Points1),
                     // Velocity
                     U: Number(d.velocity0),
@@ -112,6 +133,8 @@ var ParticleSystem = function () {
 
                 // create the particle system
                 self.createParticleSystem();
+
+                self.createPlane();
             });
     };
 
