@@ -30,6 +30,28 @@ var ParticleSystem = function () {
     var colorScale = d3.scaleSequential().domain([1, 50])
         .interpolator(d3.interpolateViridis);
 
+
+    // Slice
+
+    var margin = { top: 40, left: 40, right: 40, bottom: 40 };
+
+    var sliceWidth = document.getElementById('slice').offsetWidth - margin.left - margin.right;
+    var sliceHeight = document.getElementById('scene').offsetHeight - margin.top - margin.bottom;
+
+    var svg = d3.select('#slice').append('svg')
+        .attr('width', sliceWidth + margin.left + margin.right)
+        .attr('height', sliceHeight + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        //xScale
+        var xScale = d3.scaleLinear()
+        .range([0, sliceWidth]);
+
+    //yScale
+    var yScale = d3.scaleLinear()
+        .range([sliceHeight, 0]);
+
     // create the containment box.
     // This cylinder is only to guide development.
     // TODO: Remove after the data has been rendered
@@ -74,24 +96,49 @@ var ParticleSystem = function () {
     };
 
     self.createPlane = function () {
-        // var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20, 15, 15), new THREE.MeshStandardMaterial( {color: 0xa3a3a3, side: THREE.DoubleSide, opacity: 0.1, transparent: true, wireframe: true} ));
-        
         var height = bounds.maxY - bounds.minY;
         var width = bounds.maxX - bounds.minX;
 
-        var planeGeom = new THREE.PlaneGeometry(width+1, height+1, 16);
-        var planeMat = new THREE.MeshBasicMaterial({color: 0x000000, side: THREE.DoubleSide, opacity: 0.3, transparent: true});
+        var planeGeom = new THREE.PlaneGeometry(width + 1, height + 1, 16);
+        var planeMat = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, opacity: 0.3, transparent: true });
 
         planeMat.transparent = true;
 
-        plane = new THREE.Mesh( planeGeom, planeMat );
+        plane = new THREE.Mesh(planeGeom, planeMat);
         plane.name = 'plane';
-                // plane.position.y = (bounds.minY + bounds.maxY) / 2;
-        // plane.position.z = 0;
+        // plane.position.y = (bounds.minY + bounds.maxY) / 2;
+        // plane.position.z = 5;
 
         sceneObject.add(plane);
 
     }
+
+    //create 2d slice of data
+    self.createSlice = function (planeZ) {
+        if (planeZ == undefined) { planeZ = 1; }
+
+        //remove previous points
+        d3.selectAll('.points').remove();
+
+        xScale.domain([bounds.minX, bounds.maxX]);
+        yScale.domain([bounds.minY, bounds.maxY]);
+
+        var sliceData = data.filter((p) => {
+            return Math.abs(p.Z - planeZ) < 0.05; // TODO extract constant
+        });
+
+        console.log(sliceData);
+
+        svg.selectAll('.points')
+            .data(sliceData)
+            .enter()
+            .append('circle')
+            .attr('class', 'point')
+            .attr("r", 2.5)
+            .attr('cx', function (d) { return xScale(d.X); })
+            .attr('cy', function (d) { return yScale(d.Y + 5); })
+            .style('fill', function (d) { return colorScale(d.concentration); });
+    };
 
     // data loading function
     self.loadData = function (file) {
@@ -135,6 +182,8 @@ var ParticleSystem = function () {
                 self.createParticleSystem();
 
                 self.createPlane();
+
+                self.createSlice(plane.position.z);
             });
     };
 
