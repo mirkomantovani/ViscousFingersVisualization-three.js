@@ -21,6 +21,8 @@ var ParticleSystem = function () {
     var particleSystem;
     var plane;
 
+    const planeMaxDistance = 0.05;
+
     // D3 functions
     // var colorScale = d3.scaleLinear()
     //     .domain([0, 3])
@@ -118,16 +120,16 @@ var ParticleSystem = function () {
         if (planeZ == undefined) { planeZ = 1; }
 
         //remove previous points
-        d3.selectAll('.points').remove();
+        d3.selectAll('.point').remove();
 
         xScale.domain([bounds.minX, bounds.maxX]);
         yScale.domain([bounds.minY, bounds.maxY]);
 
         var sliceData = data.filter((p) => {
-            return Math.abs(p.Z - planeZ) < 0.05; // TODO extract constant
+            return Math.abs(p.Z - planeZ) < planeMaxDistance;
         });
 
-        console.log(sliceData);
+        // console.log(sliceData);
 
         svg.selectAll('.points')
             .data(sliceData)
@@ -186,6 +188,13 @@ var ParticleSystem = function () {
                 self.createSlice(plane.position.z);
             });
     };
+    
+    // Slider behavior
+    d3.select("#slider").on("input", function() {
+        var sliderValue = this.value;
+        self.createSlice(sliderValue);
+
+    });
 
     // publicly available functions
     var publiclyAvailable = {
