@@ -234,6 +234,7 @@ var ParticleSystem = function () {
 
     $(document).ready(function () {
         $('.tooltipped').tooltip();
+        $('.modal').modal();
     });
 
     // publicly available functions

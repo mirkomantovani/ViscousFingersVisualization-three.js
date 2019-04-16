@@ -7,7 +7,7 @@
     <title>Assignment 3 -- three.js Robot</title>
 
     <!-- CSS Libraries -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="./lib/css/material.icons.css" />
     <link rel="stylesheet" href="./lib/css/materialize.min.css" />
 
@@ -19,7 +19,7 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="lib/js/three.min.js"></script>
     <script src="lib/js/orbitControls.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.6/d3.min.js"></script>
     <script src="./lib/js/materialize.min.js"></script>
 
@@ -34,10 +34,10 @@
     <h4 class="center-align">Fluid Flow Visualization</h4>
     <div class="container-fluid">
         <div class="row">
-            <div class="particleDiv col-md-6">
+            <div class="particleDiv col s6">
                 <div id="scene"></div>
             </div>
-            <div class="particleDiv col-md-6">
+            <div class="particleDiv col s6">
                 <div id="slice"></div>
             </div>
         </div>
@@ -50,12 +50,27 @@
                 </p>
             </div>
 
-            <div class="col s2">
-                <a id="resetBtn" class="btn-floating btn-small waves-effect waves-light teal accent-4 tooltipped" data-position="right" data-tooltip="Reset points color"><i
-                        class="material-icons">color_lens</i></a>
+            <div class="col s1">
+                <a id="resetBtn" class="btn-floating btn-large waves-effect waves-light teal accent-4 tooltipped"
+                    data-position="right" data-tooltip="Reset points color"><i class="material-icons">color_lens</i></a>
             </div>
+            <div class="col s1">
+                <a id="infoBtn" class="btn-floating btn-large waves-effect waves-light teal accent-4 modal-trigger"
+                    data-target="modal1" data-position="right" data-tooltip="Open info"><i
+                        class="material-icons">info</i></a>
+            </div>
+            
         </div>
     </div>
+    <div id="modal1" class="modal teal">
+            <div class="modal-content">
+                <h4>Modal Header</h4>
+                <p>A bunch of text</p>
+            </div>
+            <!-- <div class="modal-footer"> -->
+                <!-- <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a> -->
+            <!-- </div> -->
+        </div>
 </body>
 
 </html>
