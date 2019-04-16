@@ -17,7 +17,7 @@ var ParticleSystem = function () {
     // bounds of the data
     var bounds = {};
 
-    var particleSize = 0.005;
+    var particleSize = 0.007;
     var particleSystem;
     var plane;
 
@@ -196,6 +196,11 @@ var ParticleSystem = function () {
         recolorPoints(sliderValue);
     });
 
+    // Button behavior
+    d3.select("#resetBtn").on("click", function () {
+        resetPointsColor();
+    });
+
     var recolorPoints = function (z) {
         var vert = particleSystem.geometry.vertices;
         var mat = particleSystem.material.opacity = 0.6;
@@ -205,7 +210,7 @@ var ParticleSystem = function () {
 
         for (var i = 0; i < vert.length; i++) {
             var color;
-            if (Math.abs(vert[i].z - z) < planeMaxDistance) {
+            if (Math.abs(vert[i].z - z) < 2 * planeMaxDistance) {
                 color = colorScale(data[i].concentration);
             } else {
                 color = greyColorScale(data[i].concentration);
@@ -213,8 +218,23 @@ var ParticleSystem = function () {
             particleSystem.geometry.colors[i] = new THREE.Color(color);
         }
         particleSystem.geometry.colorsNeedUpdate = true;
-
     }
+
+    function resetPointsColor(){
+        var vert = particleSystem.geometry.vertices;
+        var mat = particleSystem.material.opacity = 1;
+
+        for (var i = 0; i < vert.length; i++) {
+            var color;
+            color = colorScale(data[i].concentration);
+            particleSystem.geometry.colors[i] = new THREE.Color(color);
+        }
+        particleSystem.geometry.colorsNeedUpdate = true;
+    }
+
+    $(document).ready(function () {
+        $('.tooltipped').tooltip();
+    });
 
     // publicly available functions
     var publiclyAvailable = {
