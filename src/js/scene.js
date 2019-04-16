@@ -21,6 +21,10 @@ var Scene = function(options) {
     self.camera.position.set(8,10,10);
     self.camera.lookAt(0,0,0);
 
+    console.log(self.camera.position.X);
+    console.log(self.camera.position);
+
+
     // Add a directional light to show off the objects
     var light = new THREE.DirectionalLight( 0xffffff, 1.5);
     // Position the light out from the scene, pointing at the origin
@@ -43,6 +47,8 @@ var Scene = function(options) {
 
     /* add the checkboard floor to the scene */
 
+    var rotSpeed = 0.001;
+
     self.public =  {
 
         resize: function() {
@@ -55,6 +61,13 @@ var Scene = function(options) {
 
         render: function() {
             requestAnimationFrame( self.public.render );
+            var x = self.camera.position.x;
+            var z = self.camera.position.z;
+            self.camera.position.x = x * Math.cos(rotSpeed) + z * Math.sin(rotSpeed);
+            self.camera.position.z = z * Math.cos(rotSpeed) - x * Math.sin(rotSpeed);
+            self.camera.lookAt(self.scene.position);
+
+            // console.log(self.camera.position.X);
             self.renderer.render( self.scene, self.camera );
         }
 
