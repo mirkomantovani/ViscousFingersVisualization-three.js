@@ -32,6 +32,11 @@ var ParticleSystem = function () {
     var colorScale = d3.scaleSequential().domain([1, 50])
         .interpolator(d3.interpolateViridis);
 
+    var greyColorScale = d3.scaleLinear()
+        .domain([0, 5])
+        .range(['#9E9E9E', '#424242'])
+        .interpolate(d3.interpolateRgb);
+
 
     // Slice
 
@@ -46,8 +51,8 @@ var ParticleSystem = function () {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        //xScale
-        var xScale = d3.scaleLinear()
+    //xScale
+    var xScale = d3.scaleLinear()
         .range([0, sliceWidth]);
 
     //yScale
@@ -85,7 +90,6 @@ var ParticleSystem = function () {
         data.map((p) => {
             pGeom.vertices.push(new THREE.Vector3(p.X, p.Y, p.Z));
             pGeom.colors.push(new THREE.Color(colorScale(p.concentration)));
-
         });
 
         // Create particle system
@@ -177,24 +181,40 @@ var ParticleSystem = function () {
             // when done loading
             .get(function () {
                 // draw the containment cylinder
-                // TODO: Remove after the data has been rendered
                 // self.drawContainment();
-
-                // create the particle system
                 self.createParticleSystem();
-
                 self.createPlane();
-
                 self.createSlice(plane.position.z);
             });
     };
-    
+
     // Slider behavior
-    d3.select("#slider").on("input", function() {
+    d3.select("#slider").on("input", function () {
         var sliderValue = this.value;
         plane.position.z = sliderValue;
         self.createSlice(sliderValue);
+        recolorPoints(sliderValue);
     });
+
+    var recolorPoints = function (z) {
+        var vert = particleSystem.geometry.vertices;
+        var mat = particleSystem.material.opacity = 0.6;
+        // particleSystem.material.transparent = true;
+        // var conc = particleSystem.geometry.conc;
+
+
+        for (var i = 0; i < vert.length; i++) {
+            var color;
+            if (Math.abs(vert[i].z - z) < planeMaxDistance) {
+                color = colorScale(data[i].concentration);
+            } else {
+                color = greyColorScale(data[i].concentration);
+            }
+            particleSystem.geometry.colors[i] = new THREE.Color(color);
+        }
+        particleSystem.geometry.colorsNeedUpdate = true;
+
+    }
 
     // publicly available functions
     var publiclyAvailable = {
